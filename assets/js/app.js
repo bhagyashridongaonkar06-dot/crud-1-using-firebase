@@ -8,12 +8,27 @@ const email = document.getElementById('email')
 const contact = document.getElementById('contact')
 const addstdBtn = document.getElementById('addstdBtn')
 const updatestdBtn = document.getElementById('updatestdBtn')
+const spinner = document.getElementById('spinner')
 
 let base_url = 'https://bhagyashri-s-first-database-default-rtdb.firebaseio.com/'
 let std_url = `${base_url}/students.json`
 
 let studentArr = [];
 
+function snackbar(msg, icon){
+    Swal.fire({
+        title : msg,
+        icon : icon,
+        timer : 3000
+    })
+}
+function hideSpinner(){
+    spinner.classList.add('d-none')  
+}
+
+function showSpinner(){
+    spinner.classList.remove('d-none')
+}
 
 function onSubmit(eve){
     eve.preventDefault();
