@@ -16,6 +16,7 @@ let studentArr = [];
 
 
 function onSubmit(eve){
+    showSpinner()
     eve.preventDefault();
 
     let newStud = {
@@ -50,9 +51,11 @@ function onSubmit(eve){
 
             let srNo = document.querySelectorAll('#studentContainer tr td:first-child')
             srNo.forEach((e,i)=>{e.innerText = i + 1})
+            snackbar(`New student with name ${newStud.fname} ${newStud.lname} added successfully`, 'success')
         }else{
             cl('ERROR')
         }
+        hideSpinner()
     }
     
 }
@@ -62,6 +65,7 @@ function onSubmit(eve){
 // }
 
 function onUpdate(){
+    showSpinner()
     let update_id = localStorage.getItem('EDIT_Id')
     // cl(update_id)
     let update_url = `${base_url}/students/${update_id}.json`
@@ -89,9 +93,15 @@ function onUpdate(){
             td[3].innerHTML = updateObj.email
             tds[4].innerHTML = updateObj.contact
 
+            snackbar(`student with name ${updateObj.fname}  ${updateObj.lname} updated successfully`, 'success')
+
+
             addStd.classList.remove('d-none')
             updateStd.classList.add('d-none')
+        }else{
+            cl('ERROR')
         }
+        hideSpinner()
     }
 }
 
