@@ -6,8 +6,8 @@ const fname = document.getElementById('fname')
 const lname = document.getElementById('lname')
 const email = document.getElementById('email')
 const contact = document.getElementById('contact')
-const addstdBtn = document.getElementById('addstdBtn')
-const updatestdBtn = document.getElementById('updatestdBtn')
+const addStd = document.getElementById('addStd')
+const updateStd = document.getElementById('updateStd')
 const spinner = document.getElementById('spinner')
 
 let base_url = 'https://bhagyashri-s-first-database-default-rtdb.firebaseio.com/'
