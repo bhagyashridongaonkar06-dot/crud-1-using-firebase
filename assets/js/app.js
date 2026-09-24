@@ -58,7 +58,7 @@ function onEditStudent(ele){
     let EDIT_URL = `${base_url}/students/${EDIT_ID}.json`
     let xhr = new XMLHttpRequest();
 
-    xhr.open("PATCH", EDIT_URL);
+    xhr.open("GET", EDIT_URL);
     xhr.send(null);
     xhr.onload = function(){
         if(xhr.status >= 200 && xhr.status <= 299){
