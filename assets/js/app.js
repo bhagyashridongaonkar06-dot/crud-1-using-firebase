@@ -27,7 +27,6 @@ function onSubmit(eve){
     }
 
     // studentArr(newStud)
-
     let xhr = new XMLHttpRequest();
 
     xhr.open('POST', std_url, true)
@@ -40,13 +39,13 @@ function onSubmit(eve){
 
             let tr = document.createElement('tr')
             tr.id = res.newStud
-            tr.innerHTML = `<td>${newStud.length}</td>
+            tr.innerHTML = `    <td>${newStud.length}</td>
                                 <td>${newStud.fname}</td>
                                 <td>${newStud.lname}</td>
                                 <td>${newStud.email}</td>
                                 <td>${newStud.contact}</td>
-                                <td><button class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
-                                <td><button class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>`
+                                <td><button onClick="onEditStudent(this)" class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
+                                <td><button onClick="onRemoveStudent(this)" class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>`
             studentContainer.prepend(tr)
 
             let srNo = document.querySelectorAll('#studentContainer tr td:first-child')
@@ -81,7 +80,58 @@ function oncreatestdList(arr){
     studentContainer.innerHTML = result
     //hello
 }
+     
 
+
+//=================================== Edit ==========================================
+function onEditStudent(ele){
+    let EDIT_ID = ele.closest("tr").id;
+    let EDIT_URL = `${base_url}/students/${EDIT_ID}.json`
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", EDIT_URL);
+    xhr.send(null);
+    xhr.onload = function(){
+        if(xhr.status >= 200 && xhr.status <= 299){
+            let res = JSON.parse(xhr.response);
+
+            //Patching Data
+            fname.value = res.fname;
+            lname.value = res.lname;
+            email.value = res.email;
+            contact.value = res.contact;
+
+            localStorage.setItem("EDIT_ID",EDIT_ID)
+
+            addStd.classList.add("d-none")
+            updateStd.classList.remove("d-none")
+        }
+        else{
+            cl("Something went wrong")
+        }
+    }
+
+}
+
+//=================================== Delete ==========================================
+function onRemoveStudent(ele){
+    let DELETE_ID = ele.closest("tr").id;
+
+    let DELETE_URL = `${base_url}/students/${DELETE_ID}.json`
+
+    let xhr = new XMLHttpRequest();
+    xhr.open("DELETE", DELETE_URL);
+    xhr.send(null);
+    xhr.onload = function(){
+        if(xhr.status >= 200 && xhr.status <= 299){
+            let res = JSON.parse(xhr.response);
+            ele.closest("tr").remove();
+        }
+        else{
+            cl("Something went wrong")
+        }
+    }
+}
 
 
 
