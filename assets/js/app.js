@@ -178,14 +178,6 @@ cl(studentArr)
 
 
 
-
-
-
-
-
-
-
-
 function onUpdate(){
     showSpinner()
     let update_id = localStorage.getItem('EDIT_Id')
