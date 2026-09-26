@@ -125,26 +125,30 @@ function onUpdate(){
     xhr.send(JSON.stringify(updateObj))
 
     xhr.onload = function(){
-        if(xhr.status >=  200 && xhr.status <= 299){
-            let data = JSON.parse(xhr.response)
 
-            let tds = document.getElementById(update_id).children;
-            tds[1].innerHTML = updateObj.fname
-            tds[2].innerHTML = updateObj.lname
-            td[3].innerHTML = updateObj.email
-            tds[4].innerHTML = updateObj.contact
-
-            snackbar(`student with name ${updateObj.fname}  ${updateObj.lname} updated successfully`, 'success')
+        
+        if(xhr.status >=  200 && xhr.status <= 299){  
+        
+            let data = JSON.parse(xhr.response)  
 
 
-            addStd.classList.remove('d-none')
-            updateStd.classList.add('d-none')
-        }else{
-            cl('ERROR')
-        }
-        hideSpinner()
-    }
-}
+            let tds = document.getElementById(update_id).children; 
+            tds[1].innerHTML = updateObj.fname 
+            tds[2].innerHTML = updateObj.lname 
+            td[3].innerHTML = updateObj.email 
+            tds[4].innerHTML = updateObj.contact 
+
+            snackbar(`student with name ${updateObj.fname}   ${updateObj.lname} updated successfully`, 'success')
+
+
+             addStd.classList.remove('d-none')
+             updateStd.classList.add('d-none')
+         }else{
+             cl('ERROR')
+         }
+         hideSpinner()
+    } 
+} 
 
 
 studForm.addEventListener('submit', onSubmit)    
