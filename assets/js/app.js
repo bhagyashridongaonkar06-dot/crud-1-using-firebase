@@ -64,6 +64,47 @@ function onSubmit(eve){
     
 // }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function onUpdate(){
     showSpinner()
     let update_id = localStorage.getItem('EDIT_Id')
@@ -106,5 +147,5 @@ function onUpdate(){
 }
 
 
-studForm.addEventListener('submit', onSubmit)
-updateStd.addEventListener('click', onUpdate)
+studForm.addEventListener('submit', onSubmit)    
+updateStd.addEventListener('click', onUpdate)    
