@@ -59,8 +59,8 @@ function onSubmit(eve){
                                 <td>${newStud.lname}</td>
                                 <td>${newStud.email}</td>
                                 <td>${newStud.contact}</td>
-                                <td><button onClick="onEditStudent(this)" class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
-                                <td><button onClick="onRemoveStudent(this)" class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>`
+                                <td><button onClick="onEditStudent(this)"  class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
+                                <td><button onClick="onRemoveStudent(this)"  class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>`
             studentContainer.prepend(tr)
         }else{
             cl('ERROR')
@@ -83,12 +83,12 @@ function oncreatestdList(arr){
                 <td>${ele.lname}</td>
                 <td>${ele.email}</td>
                 <td>${ele.contact}</td>
-                <td><button  onClick="onEditStudent(this)" class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
-                <td><button  onClick="onRemoveStudent(this)" class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>
+                <td><button onClick="onEditStudent(this)"  class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
+                <td><button onClick="onRemoveStudent(this)"  class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>
             </tr>`
     })
     studentContainer.innerHTML = result
-    //hello
+    //hello     
 }
 
 function readStd(){
