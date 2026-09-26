@@ -166,6 +166,9 @@ function onRemoveStudent(ele) {
                 }
                 hideSpinner()
             }
+            xhr.onerror = function(){
+                hideSpinner()
+            }
         }
     });
 
