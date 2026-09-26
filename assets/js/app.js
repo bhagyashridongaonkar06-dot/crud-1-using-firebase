@@ -15,30 +15,30 @@ let std_url = `${base_url}/students.json`
 
 let studentArr = [];
 
-function snackbar(msg, icon){
+function snackbar(msg, icon) {
     Swal.fire({
-        title : msg,
-        icon : icon,
-        timer : 3000
+        title: msg,
+        icon: icon,
+        timer: 3000
     })
 }
-function hideSpinner(){
-    spinner.classList.add('d-none')  
+function hideSpinner() {
+    spinner.classList.add('d-none')
 }
 
-function showSpinner(){
+function showSpinner() {
     spinner.classList.remove('d-none')
 }
 
-function onSubmit(eve){
+function onSubmit(eve) {
     showSpinner()
     eve.preventDefault();
 
     let newStud = {
-        fname : fname.value,
-        lname : lname.value,
-        email : email.value,
-        contact : contact.value
+        fname: fname.value,
+        lname: lname.value,
+        email: email.value,
+        contact: contact.value
     }
     studForm.reset()
 
@@ -49,8 +49,8 @@ function onSubmit(eve){
 
     xhr.send(JSON.stringify(newStud))
 
-    xhr.onload = function(){
-        if(xhr.status >= 200 && xhr.status <= 299){
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status <= 299) {
             let res = JSON.parse(xhr.response)
             console.log(res)
             let tr = document.createElement('tr')
@@ -65,26 +65,26 @@ function onSubmit(eve){
             studentContainer.prepend(tr)
 
             let srNo = document.querySelectorAll('#studentContainer tr td:first-child')
-            srNo.forEach((e,i)=>{e.innerText = i + 1})
+            srNo.forEach((e, i) => { e.innerText = i + 1 })
             snackbar(`New student with name ${newStud.fname} ${newStud.lname} added successfully`, 'success')
-        }else{
+        } else {
             cl('ERROR')
         }
         hideSpinner()
     }
-    
+
 }
 
 //read
-function oncreatestdList(arr){
+function oncreatestdList(arr) {
     let result = ``
-    
-    arr.forEach((ele,i)=>{
 
-        
+    arr.forEach((ele, i) => {
+
+
         result += `
             <tr id="${ele.id}">
-                <td>${i+1}</td>
+                <td>${i + 1}</td>
                 <td>${ele.fname}</td>
                 <td>${ele.lname}</td>
                 <td>${ele.email}</td>
@@ -96,19 +96,20 @@ function oncreatestdList(arr){
     studentContainer.innerHTML = result
     //hello     
 }
-     
+
 
 
 //=================================== Edit ==========================================
-function onEditStudent(ele){
+function onEditStudent(ele) {
     let EDIT_ID = ele.closest("tr").id;
     let EDIT_URL = `${base_url}/students/${EDIT_ID}.json`
+    
     let xhr = new XMLHttpRequest();
 
     xhr.open("GET", EDIT_URL);
     xhr.send(null);
-    xhr.onload = function(){
-        if(xhr.status >= 200 && xhr.status <= 299){
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status <= 299) {
             let res = JSON.parse(xhr.response);
 
             //Patching Data
@@ -117,12 +118,12 @@ function onEditStudent(ele){
             email.value = res.email;
             contact.value = res.contact;
 
-            localStorage.setItem("EDIT_ID",EDIT_ID)
+            localStorage.setItem("EDIT_ID", EDIT_ID)
 
             addStd.classList.add("d-none")
             updateStd.classList.remove("d-none")
         }
-        else{
+        else {
             cl("Something went wrong")
         }
     }
@@ -130,23 +131,44 @@ function onEditStudent(ele){
 }
 
 //=================================== Delete ==========================================
-function onRemoveStudent(ele){
+function onRemoveStudent(ele) {
     let DELETE_ID = ele.closest("tr").id;
-
+    
     let DELETE_URL = `${base_url}/students/${DELETE_ID}.json`
+    
+    
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+        showSpinner()
+        if (result.isConfirmed) {
 
-    let xhr = new XMLHttpRequest();
-    xhr.open("DELETE", DELETE_URL);
-    xhr.send(null);
-    xhr.onload = function(){
-        if(xhr.status >= 200 && xhr.status <= 299){
-            let res = JSON.parse(xhr.response);
-            ele.closest("tr").remove();
+            let xhr = new XMLHttpRequest();
+            xhr.open("DELETE", DELETE_URL);
+            xhr.send(null);
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status <= 299) {
+                    let res = JSON.parse(xhr.response);
+                    snackbar(`student with id ${DELETE_ID} deleted successfully`, 'success')
+                    ele.closest("tr").remove();
+                    let tds = document.querySelectorAll('#studentContainer tr td:first-child')
+                    tds.forEach((e, i) => { e.innerText = i + 1 })
+
+                }
+                else {
+                    cl("Something went wrong")
+                }
+                hideSpinner()
+            }
         }
-        else{
-            cl("Something went wrong")
-        }
-    }
+    });
+
 }
 
 
@@ -163,15 +185,15 @@ function onRemoveStudent(ele){
 
 
 
-function readStd(){
+function readStd() {
     let xhr = new XMLHttpRequest()
 
-    xhr.open("GET",std_url,true)
+    xhr.open("GET", std_url, true)
 
     xhr.send(null)
 
-    xhr.onload = function(){
-        if(xhr.status === 200){
+    xhr.onload = function () {
+        if (xhr.status === 200) {
             let res = JSON.parse(xhr.response)
             cl(res)
             for (const key in res) {
@@ -182,7 +204,7 @@ function readStd(){
                 cl(studentArr)
             }
             oncreatestdList(studentArr)
-        }else{
+        } else {
             cl("ERROR")
         }
     }
@@ -194,17 +216,17 @@ cl(studentArr)
 
 
 
-function onUpdate(){
+function onUpdate() {
     showSpinner()
-    let update_id = localStorage.getItem('EDIT_Id')
+    let update_id = localStorage.getItem('EDIT_ID')
     // cl(update_id)
     let update_url = `${base_url}/students/${update_id}.json`
     let updateObj = {
-        fname : fname.value,
-        lname : lname.value,
-        email : email.value,
-        contact : contact.value,
-        id : update_id
+        fname: fname.value,
+        lname: lname.value,
+        email: email.value,
+        contact: contact.value,
+        id: update_id
     }
 
     studForm.reset()
@@ -215,32 +237,32 @@ function onUpdate(){
 
     xhr.send(JSON.stringify(updateObj))
 
-    xhr.onload = function(){
-
-        
-        if(xhr.status >=  200 && xhr.status <= 299){  
-        
-            let data = JSON.parse(xhr.response)  
+    xhr.onload = function () {
 
 
-            let tds = document.getElementById(update_id).children; 
-            tds[1].innerHTML = updateObj.fname 
-            tds[2].innerHTML = updateObj.lname 
-            tds[3].innerHTML = updateObj.email 
-            tds[4].innerHTML = updateObj.contact 
+        if (xhr.status >= 200 && xhr.status <= 299) {
+
+            let data = JSON.parse(xhr.response)
+
+
+            let tds = document.getElementById(update_id).children;
+            tds[1].innerHTML = data.fname
+            tds[2].innerHTML = data.lname
+            tds[3].innerHTML = data.email
+            tds[4].innerHTML = data.contact
 
             snackbar(`student with name ${updateObj.fname}   ${updateObj.lname} updated successfully`, 'success')
 
 
-             addStd.classList.remove('d-none')
-             updateStd.classList.add('d-none')
-         }else{
-             cl('ERROR')
-         }
-         hideSpinner()
-    } 
-} 
+            addStd.classList.remove('d-none')
+            updateStd.classList.add('d-none')
+        } else {
+            cl('ERROR')
+        }
+        hideSpinner()
+    }
+}
 
 
-studForm.addEventListener('submit', onSubmit)    
+studForm.addEventListener('submit', onSubmit)
 updateStd.addEventListener('click', onUpdate)    
