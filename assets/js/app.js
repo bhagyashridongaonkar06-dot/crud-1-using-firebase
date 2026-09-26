@@ -6,14 +6,29 @@ const fname = document.getElementById('fname')
 const lname = document.getElementById('lname')
 const email = document.getElementById('email')
 const contact = document.getElementById('contact')
-const addstdBtn = document.getElementById('addstdBtn')
-const updatestdBtn = document.getElementById('updatestdBtn')
+const addStd = document.getElementById('addStd')
+const updateStd = document.getElementById('updateStd')
+const spinner = document.getElementById('spinner')
 
 let base_url = 'https://bhagyashri-s-first-database-default-rtdb.firebaseio.com'
 let std_url = `${base_url}/students.json`
 
 let studentArr = [];
 
+function snackbar(msg, icon){
+    Swal.fire({
+        title : msg,
+        icon : icon,
+        timer : 3000
+    })
+}
+function hideSpinner(){
+    spinner.classList.add('d-none')  
+}
+
+function showSpinner(){
+    spinner.classList.remove('d-none')
+}
 
 function onSubmit(eve){
     showSpinner()
@@ -25,6 +40,7 @@ function onSubmit(eve){
         email : email.value,
         contact : contact.value
     }
+    studForm.reset()
 
     // studentArr(newStud)
     let xhr = new XMLHttpRequest();
@@ -36,9 +52,9 @@ function onSubmit(eve){
     xhr.onload = function(){
         if(xhr.status >= 200 && xhr.status <= 299){
             let res = JSON.parse(xhr.response)
-
+            console.log(res)
             let tr = document.createElement('tr')
-            tr.id = res.newStud
+            tr.id = res.name
             tr.innerHTML = `    <td>${newStud.length}</td>
                                 <td>${newStud.fname}</td>
                                 <td>${newStud.lname}</td>
@@ -73,12 +89,12 @@ function oncreatestdList(arr){
                 <td>${ele.lname}</td>
                 <td>${ele.email}</td>
                 <td>${ele.contact}</td>
-                <td><button class="btn btn-sm btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
-                <td><button class="btn btn-sm btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>
+                <td><button onClick="onEditStudent(this)"  class="btn btn-block btn-success text-white"><i class="fa-regular fa-pen-to-square fa-2x"></i></button></td>
+                <td><button onClick="onRemoveStudent(this)"  class="btn btn-block btn-danger text-white"><i class="fa-solid fa-trash fa-2x"></i></button></td>
             </tr>`
     })
     studentContainer.innerHTML = result
-    //hello
+    //hello     
 }
      
 
@@ -191,6 +207,8 @@ function onUpdate(){
         id : update_id
     }
 
+    studForm.reset()
+
     let xhr = new XMLHttpRequest();
 
     xhr.open('PATCH', update_url, true)
@@ -208,7 +226,7 @@ function onUpdate(){
             let tds = document.getElementById(update_id).children; 
             tds[1].innerHTML = updateObj.fname 
             tds[2].innerHTML = updateObj.lname 
-            td[3].innerHTML = updateObj.email 
+            tds[3].innerHTML = updateObj.email 
             tds[4].innerHTML = updateObj.contact 
 
             snackbar(`student with name ${updateObj.fname}   ${updateObj.lname} updated successfully`, 'success')
